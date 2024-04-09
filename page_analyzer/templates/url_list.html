@@ -9,31 +9,55 @@
     <title>Анализатор страниц</title>
 </head>
 <body>
-<h1>Сайты</h1>
+<header class="flex-shrink-0">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark px-3">
+        <a class="navbar-brand" href="/">Анализатор страниц</a>
+        <div id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="/urls">Сайты</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
 
-<div class="table-responsive">
-    <table class="table table-bordered table-hover text-nowrap"
-           data-test="urls">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Имя</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% if items %}
-        {% for item in items %}
-        <tr>
-            <td>{{ item.id }}</td>
-            <td><a href="{{ url_for('get_url', url_id=item.id) }}">
-                {{ item.name }}
-            </a></td>
+{% set messages = get_flashed_messages(with_categories=True) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="alert {{ category }}" role="alert">{{ message }}</div>
+{% endfor %}
+{% endif %}
 
-        </tr>
-        {% endfor %}
-        {% endif %}
-        </tbody>
-    </table>
-</div>
+<main class="container-lg mt-3">
+    <h1>Сайты</h1>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover text-nowrap"
+               data-test="urls">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Имя</th>
+                <th>Последняя проверка</th>
+                <th>Код ответа</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% if items %}
+            {% for item in items %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td><a href="{{ url_for('get_url', url_id=item.id) }}">
+                    {{ item.name }}
+                </a></td>
+                <td>{{ item.last_check }}</td>
+                <td>{{ item.status_code}}</td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+</main>
 </body>
 </html>

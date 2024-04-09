@@ -50,8 +50,15 @@ def get_url_by_id(url_id):
 def get_all_urls():
     with DatabaseConnection() as cursor:
         query = ('SELECT urls.id AS id, urls.name AS name, '
-                 'urls.created_at AS created_at '
-                 'FROM urls ORDER BY urls.id DESC;')
+                 'urls.created_at AS last_check, '
+                 'status_code '
+                 'FROM urls '
+                 'LEFT JOIN url_checks '
+                 'ON urls.id = url_checks.url_id '
+                 'AND url_checks.id = ('
+                 'SELECT max(id) FROM '
+                 'url_checks WHERE urls.id = url_checks.url_id) '
+                 'ORDER BY urls.id DESC;')
         cursor.execute(query)
         urls = cursor.fetchall()
         return urls
@@ -66,7 +73,6 @@ def add_url_check(check_data):
                   check_data.get('h1', ''), check_data.get('title', ''),
                   check_data.get('description', ''),
                   datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-        print(query)
         cursor.execute(query, values)
 
 
