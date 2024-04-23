@@ -5,6 +5,11 @@ description = "page alalyzer project"
 authors = ["Anastasia <anastasiia1803@gmail.com>"]
 readme = "README.md"
 
+
+packages = [
+    { include = "page_analyzer" },
+]
+
 [tool.poetry.dependencies]
 python = "^3.10"
 gunicorn = "^21.2.0"
