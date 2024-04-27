@@ -63,7 +63,7 @@ def url_checks(url_id):
         response = requests.get(url.name)
         response.raise_for_status()
     except requests.exceptions.RequestException:
-        flash('Ошибка при проверке', 'alert-danger')
+        flash('Произошла ошибка при проверке', 'alert-danger')
         return redirect(url_for('get_url', url_id=url_id))
 
     check_data = parse_page(response.text)
